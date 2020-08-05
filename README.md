@@ -22,6 +22,7 @@
 ## PreProcess the Raw Data (BBtools)
 
 **1. Trim adaptors**
+
 Besides trim adaptors, optionally, reads with Ns can be disregarded by adding “maxns=0” ;
 and reads with really low average quality can be disregarded with “maq=8”
 ```bash
@@ -30,6 +31,7 @@ $ bbduk.sh in=input.fastq out=output.fastq \
                           ktrim=r k=23 mink=11 hdist=1 tpe tbo
 ```
 **2. Remove synthetic artifacts and spike-ins by kmer-matching**
+
 This will remove all reads that have a 31-mer match to PhiX, allowing one mismatch.
 The “outm” stream will catch reads that matched a reference kmers;
 “stats” will produce a report of which contaminant sequences were seen, and how many reads had them.
@@ -40,12 +42,14 @@ $ bbduk.sh in=trimed.fastq out=output_u.fastq outm=output_m.fastq \
            k=31 hdist=1 stats=stats.txt
 ```
 **3. Error Correction**
+
 Low-depth reads can be discarded here with the”tossdepth”, or “tossuncorrectable” flags
 For very large datasets, “prefilter=1” or “prefilter=2” can be added to conserve memory
 ```bash
 $ tadpole.sh -Xmx32g in= output_u.fastq out=output_tecc.fastq filtermemory=7g ordered prefilter=1
 ```
 ## Assembly (Metaspades or Megahit)
+
 Metaspades require more memorial and longer time, but can get a higher quality assembly and scaffold directly
 Megahit require less memorial and less time, but with relatively lower quality and can only assembly the reads into contig.
 
