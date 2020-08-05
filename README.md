@@ -48,6 +48,7 @@ $ tadpole.sh -Xmx32g in= output_u.fastq out=output_tecc.fastq filtermemory=7g or
 ## Assembly (Metaspades or Megahit)
 Metaspades require more memorial and longer time, but can get a higher quality assembly and scaffold directly
 Megahit require less memorial and less time, but with relatively lower quality and can only assembly the reads into contig.
+
 **1. metaspades**
 ```bash
 $ metaspades --12  output_tecc.fastq -o  assembly_data.fasta
