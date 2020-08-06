@@ -141,7 +141,9 @@ For the proteins in the same scaffod, they should have the same RPKM with this s
 ```bash
 $ prodigal -i sequence_min1000.fasta -p meta -a trans_protein.fasta -f gff -o predicted.gff
 
-# two output files: trans_protein.fasta (protein translations file); predicted.gff (inforamtion for each CDS, we will use the CDS length) 
+# two output files: 
+trans_protein.fasta (protein translations file); 
+predicted.gff (inforamtion for each CDS, we will use the CDS length) 
 ```
 **2.1 Map scaffold RPKM to each protein that located in this scaffold.**
 
@@ -163,7 +165,8 @@ $ kofam_scan/exec_annotation -o Coassembly_KO.txt trans_protein.fasta --tmp-dir 
 ```
 map the annotated KO term into pathways through `KEGG Mapper`: https://www.genome.jp/kegg/tool/map_pathway.html
 
-**2. Metacyc reaction annotation by aligning database from Metacyc pathway database; `diamond` was used to do sequence alignment**
+**2. Metacyc reaction annotation by aligning database from Metacyc pathway database;
+`diamond` was used to do sequence alignment**
 ```bash
 $ diamond blastp --query trans_protein.fasta \
                  --db uniprot-seq-ids.fasta \
@@ -171,8 +174,9 @@ $ diamond blastp --query trans_protein.fasta \
                  --outfmt 6  --evalue 0.001 --max-target-seqs 5 --sensitive
                  
 $ python creat_RXN_dictionary.py Metacyc_protein_top5hit.blst Metacyc_protein_RXN_key_sen
-
 ```
+For more information: https://github.com/thepanlab/MetagenomicsTree/blob/master/metacyc/metacyc_annotation.md
+
 ## Genome binning
 **1.sam to sorted bam for binning**
 ```bash
