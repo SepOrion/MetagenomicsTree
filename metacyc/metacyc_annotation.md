@@ -49,14 +49,14 @@ in this samrtable to get more information of each pathway and download this smar
 https://metacyc.org/;
 https://metacyc.org/PToolsWebsiteHowto.shtml#node_sec_6
 ```
-##step1 Using DIAMOND to perform blast searches:
+### step1 Using DIAMOND to perform blast searches:
 using 'uniprot-seq-ids.fasta' as blast database, perform BLAST searches to associate protein sequences to Metacyc reactions
 ```bash
 diamond blastp --query query_protein.fasta --db  uniprot-seq-ids.db.dmnd --out query_protein_top5hit.blst \
                --outfmt 6 --evalue 0.001 --max-target-seqs 5 --sensitive
 
 ```
-##step2 link uniprot ID with Metacyc Reaction IDs, and creat dictionary with each query protein as the key and the RXNs for this 
+### step2 link uniprot ID with Metacyc Reaction IDs, and creat dictionary with each query protein as the key and the RXNs for this 
 protein as the values.
 ```bash
 python creat_RXN_dictionary.py query_protein_top5hit.blst protein_RXN_dictionary
@@ -64,6 +64,6 @@ python creat_RXN_dictionary.py query_protein_top5hit.blst protein_RXN_dictionary
 Actually, here we did not use `uniprot-seq-ids.dat` to link uniprot ID with Metacyc Reaction IDs, we just use
 information from `uniprot-seq-ids.fasta`.
 
-##step3 associate Metacyc reactions to Metacyc pathways
+### step3 associate Metacyc reactions to Metacyc pathways
 
 According to `All_pathways_of_MetaCyc.txt`, map Reaction IDs to pathways.
