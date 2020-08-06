@@ -15,7 +15,7 @@
 **shrinksam** to remove sequences that failed to map to the reference https://github.com/bcthomas/shrinksam
 **add_read_count.rb** https://github.com/bcthomas/misc_scripts/tree/master/add_read_count
 5. **Prodigal** for ORF prediction https://github.com/hyattpd/Prodigal
-6. **KOfam** KEGG ko term annotation  https://github.com/takaram/kofam_scan
+6. **KofamScan** KEGG ko term annotation  https://github.com/takaram/kofam_scan
 7. **Diamond**  alignment https://github.com/bbuchfink/diamond
 8. **Deseq** Statistical Analysis ttps://bioconductor.org/packages/release/bioc/manuals/DESeq2/man/DESeq2.pdf
 
@@ -159,7 +159,7 @@ here we add a method to get protein read counts directly from the scaffold read 
 
 ## Functional Annotation of the predicted ORF
 
-**1.	KEGG annotation through `Kofam`**
+**1.	KEGG annotation through `KofamScan`**
 ```bash
 $ kofam_scan/exec_annotation -o Coassembly_KO.txt trans_protein.fasta --tmp-dir tmp_KO --cpu 10
 ```
