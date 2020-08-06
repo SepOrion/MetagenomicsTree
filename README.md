@@ -117,7 +117,7 @@ NODE_11_length_283217_cov_82.5382   read_length_150     423
 NODE_12_length_273911_cov_216.2412  read_length_150     16
 
 ```
-**4. RPKM Calculation**
+**4. RPKM Calculation for each assembled scaffold**
 ```bash
 $ Python parse_rpkm.py mapped.counted.result total_reads_file srrID
 
@@ -135,20 +135,33 @@ $ Python parse_rpkm.py mapped.counted.result total_reads_file srrID
 **Important notes: Here we only got RPKM for each scaffold; 
 For the proteins in the same scaffod, they should have the same RPKM with this scaffold.**
 
-## ORF Prediction (Prodigal)
+## ORF Prediction and read counts for each ORF 
+1. ORF prediction through `Prodigal`
 
 ```bash
-$ prodigal -a trans_protein.fasta -i sequence_min1000.fasta -p meta -o predicted.gdk
+$ prodigal -i sequence_min1000.fasta -p meta -a trans_protein.fasta -f gff -o predicted.gff
+
+# two output files: trans_protein.fasta (protein translations file); predicted.gff (inforamtion for each CDS, we will use the CDS length) 
 ```
+**2.1 Map scaffold RPKM to each protein that located in this scaffold.**
+
+The principle is that for the proteins in the same scaffod, they should have the same RPKM with this scaffold. 
+This is analysis for metagenome, which is not same with metatranscriptomics.
+
+**2.2 read counts for each protein**
+Some statistic tools, such as DEGseq2, they use the read counts (not the normalized RPKM) as the inputs
+here we add a method to get protein read counts directly from the scaffold read counts in the above.
+`We could just divide the scaffold read counts into each protein according to their CDS length`. 
+
 
 ## Functional Annotation of the predicted ORF
 
 **1.	KEGG annotation through `Kofam`**
 ```bash
 $ kofam_scan/exec_annotation -o Coassembly_KO.txt trans_protein.fasta --tmp-dir tmp_KO --cpu 10
-
-#map the annotated KO term into pathways through KEGG Mapper: https://www.genome.jp/kegg/tool/map_pathway.html
 ```
+map the annotated KO term into pathways through `KEGG Mapper`: https://www.genome.jp/kegg/tool/map_pathway.html
+
 **2. Metacyc reaction annotation by aligning database from Metacyc pathway database; `diamond` was used to do sequence alignment**
 ```bash
 $ diamond blastp --query trans_protein.fasta \
