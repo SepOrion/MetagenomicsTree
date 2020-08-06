@@ -56,13 +56,14 @@ diamond blastp --query query_protein.fasta --db  uniprot-seq-ids.db.dmnd --out q
                --outfmt 6 --evalue 0.001 --max-target-seqs 5 --sensitive
 
 ```
-### step2 link uniprot ID with Metacyc Reaction IDs, and creat dictionary with each query protein as the key and the RXNs for this 
-protein as the values.
+### step2 Summarize the reactions mapped to each query protein
+
 ```bash
 python creat_RXN_dictionary.py query_protein_top5hit.blst protein_RXN_dictionary
 ```
-Actually, here we did not use `uniprot-seq-ids.dat` to link uniprot ID with Metacyc Reaction IDs, we just use
-information from `uniprot-seq-ids.fasta`.
+link uniprot ID with Metacyc Reaction IDs, and creat dictionary with each query protein as the key and the RXNs for this 
+protein as the values. Actually, here we did not use `uniprot-seq-ids.dat` to link uniprot ID with Metacyc Reaction IDs,
+we just use information from `uniprot-seq-ids.fasta`.
 
 ### step3 associate Metacyc reactions to Metacyc pathways
 
