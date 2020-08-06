@@ -149,6 +149,7 @@ The principle is that for the proteins in the same scaffod, they should have the
 This is analysis for metagenome, which is not same with metatranscriptomics.
 
 **2.2 read counts for each protein**
+
 Some statistic tools, such as DEGseq2, they use the read counts (not the normalized RPKM) as the inputs
 here we add a method to get protein read counts directly from the scaffold read counts in the above.
 `We could just divide the scaffold read counts into each protein according to their CDS length`. 
