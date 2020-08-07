@@ -63,7 +63,7 @@ The default memorial is 250G, if you need a larger one, you can set like -m 500
 
 **2. Megahit**
 ```bash
-$ megahit –12  output_tecc.fastq -o assembly_data_megahit.fasta
+$ megahit --12  output_tecc.fastq -o assembly_data_megahit.fasta
 ```
 
 **3. N50, N90 Calculation (BBtools)**
@@ -170,7 +170,7 @@ map the annotated KO term into pathways through `KEGG Mapper`: https://www.genom
 ```bash
 $ diamond blastp --query trans_protein.fasta \
                  --db uniprot-seq-ids.fasta \
-                 -–out Metacyc_protein_top5hit.blst \
+                 --out Metacyc_protein_top5hit.blst \
                  --outfmt 6  --evalue 0.001 --max-target-seqs 5 --sensitive
                  
 $ python creat_RXN_dictionary.py Metacyc_protein_top5hit.blst Metacyc_protein_RXN_key_sen
