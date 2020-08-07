@@ -44,7 +44,8 @@ http://bioinformatics.ai.sri.com/ptools/flatfile-format.html
 ```
 3.`All_pathways_of_MetaCyc.txt`, this table link Reaction IDs wiht pathway IDs.
 
-```login to Metacyc database, and then creat your own specical smartable of 'All pathways of MetaCyc' (you can add columns 
+```
+login to Metacyc database, and then creat your own specical smartable of 'All pathways of MetaCyc' (you can add columns 
 in this samrtable to get more information of each pathway and download this smartable). 
 https://metacyc.org/;
 https://metacyc.org/PToolsWebsiteHowto.shtml#node_sec_6
