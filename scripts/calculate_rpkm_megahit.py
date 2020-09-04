@@ -4,9 +4,12 @@ import sys
 #usage 'python calculate_rpkm.py mapped.counted.result total_reads_file srrID'
 '''
 # exampe of mapped.count.result:
-NODE_8_length_295416_cov_86.298909  read_length_150    1805
-NODE_9_length_294755_cov_77.048012  read_length_150     267
-NODE_10_length_287310_cov_147.7697  read_length_150     2469
+    
+>k141_1136180 flag=1 multi=5.0000 len=1251 read_length_150 read_count_210
+>k141_1647461 flag=1 multi=15.0000 len=1424 read_length_150 read_count_248
+>k141_1704270 flag=1 multi=12.0000 len=1498 read_length_150 read_count_212
+>k141_1249798 flag=1 multi=18.4768 len=1586 read_length_150 read_count_458
+
 
 # total_reads_file; total reads number in each sample
 10004483	SRR7768473
@@ -35,14 +38,15 @@ with open(count_result) as file_object:
     rows = file_object.readlines()
 
 with open(outfile,'w') as out_object:
+    out_object.write("scaffold_name\tTotal_reads\tmapped_reads\tscaffold_length\tRPKM\n")
     for row in rows:
         groups = row.strip().split()
-        node = groups[0].split('_')
-        counts = int(groups[2])
-        length = int(node[3])
+        scaffold_name = groups[0].replace(">", "")
+        counts = int(groups[5].replace("read_count_", ""))
+        length = int(groups[3].replace("len=", ""))
         totals = int(total(srr))
-        rpkm = counts/(length/1000*totals/1e6)
+        rpkm = float(counts/(length/1000*totals/1e6))
         
-        out_object.write(groups[0] + "\t" + str(totals) + "\t" + str(counts) + "\t" + str(length) + "\t"+ str(rpkm) + "\n")
+        out_object.write(scaffold_name + "\t" + str(totals) + "\t" + str(counts) + "\t" + str(length) + "\t"+ str(rpkm) + "\n")
         
 
