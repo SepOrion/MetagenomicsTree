@@ -39,14 +39,19 @@ with open(count_result) as file_object:
 
 with open(outfile,'w') as out_object:
     out_object.write("scaffold_name\tTotal_reads\tmapped_reads\tscaffold_length\tRPKM\n")
+    mapped_total = 0
+    totals = int(total(srr))
     for row in rows:
         groups = row.strip().split()
         scaffold_name = groups[0].replace(">", "")
         counts = int(groups[5].replace("read_count_", ""))
         length = int(groups[3].replace("len=", ""))
-        totals = int(total(srr))
+        #totals = int(total(srr))
         rpkm = float(counts/(length/1000*totals/1e6))
+        mapped_total = mapped_total + counts
         
         out_object.write(scaffold_name + "\t" + str(totals) + "\t" + str(counts) + "\t" + str(length) + "\t"+ str(rpkm) + "\n")
-        
+
+mapping_rate = float(mapped_total/totals*100)
+print(srr+" scaffold mapping rates are " + str(mapping_rate) + "%\n")
 
