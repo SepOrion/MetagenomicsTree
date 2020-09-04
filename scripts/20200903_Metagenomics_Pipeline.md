@@ -1,36 +1,46 @@
 ######################################
 ###Preprocessing raw sequence reads###
 ######################################
-
+```bash
+BBMAP_PATH="/home/suginoka/Metagenomics_Programs/bbmap"
+BBMAP_REF_PATH="/home/suginoka/Metagenomics_Programs/bbmap/resources"
 for n in *.fastq
 do
-	/home/suginoka/Metagenomics_Programs/bbmap/bbduk.sh in=$n out=$n"_output.fastq" ref=/home/suginoka/Metagenomics_Programs/bbmap/resources/adapters.fa ktrim=r k=23 mink=11 hdist=1 tpe tbo
+	BBMAP_PATH/bbduk.sh in=$n out=${n%.fastq}"_output.fastq" ref=BBMAP_REF_PATH/adapters.fa ktrim=r k=23 mink=11 hdist=1 tpe tbo
 done
-
+```
 ##Remove artifacts
-for n in *output.fastq
+```bash
+BBMAP_PATH="/home/suginoka/Metagenomics_Programs/bbmap"
+BBMAP_REF_PATH="/home/suginoka/Metagenomics_Programs/bbmap/resources"
+for n in *_output.fastq
 do
-/home/suginoka/Metagenomics_Programs/bbmap/bbduk.sh in=$n out=$n"_u.fastq" outm=$n"_m.fastq" ref=/home/suginoka/Metagenomics_Programs/bbmap/resources/sequencing_artifacts.fa.gz ref=/home/suginoka/Metagenomics_Programs/bbmap/resources/phix174_ill.ref.fa.gz k=31 hdist=1 stats=$n"_stats.txt"
+	BBMAP_PATH/bbduk.sh in=$n out=${n%_output.fastq}"_u.fastq" outm=${n%_output.fastq}"_m.fastq" ref=BBMAP_REF_PATH/sequencing_artifacts.fa.gz ref=BBMAP_REF_PATH/phix174_ill.ref.fa.gz k=31 hdist=1 stats=${n%_output.fastq}"_stats.txt"
 done
-
+```
 ######################
 ###Error correction###
 ######################
 
 ##This is tadpole; use this if the dataset is large
-for n in *u.fastq
+```bash
+BBMAP_PATH="/home/suginoka/Metagenomics_Programs/bbmap"
+for n in *_u.fastq
 do
-/home/suginoka/Metagenomics_Programs/bbmap/tadpole.sh in=$n out=$n"_ec.fastq" ecc=t passes=1 prefilter int=t
+BBMAP_PATH/tadpole.sh in=$n out=${n%_u.fastq}"_ec.fastq" ecc=t passes=1 prefilter int=t
 done
-
+```
 ##############
 ###Assembly###
 ##############
 
 ##Megahit
-/home/suginoka/Metagenomics_Programs/MEGAHIT-1.2.9-Linux-x86_64-static/bin/megahit --12 merged.fastq_output.fastq_u.fastq_ec.fastq -o merged.fastq_output.fastq_u.fastq_ec.fastq_assembly.fastq
+```bash
+#/home/suginoka/Metagenomics_Programs/MEGAHIT-1.2.9-Linux-x86_64-static/bin/megahit --12 merged.fastq_output.fastq_u.fastq_ec.fastq -o merged.fastq_output.fastq_u.fastq_ec.fastq_assembly.fastq
+# 'merged.fastq_output.fastq_u.fastq_ec.fastq_assembly.fastq' is a directory?
+/home/suginoka/Metagenomics_Programs/MEGAHIT-1.2.9-Linux-x86_64-static/bin/megahit --12 merged_ec.fastq -o merged_ec.fastq_assembly
 
-
+```
 ############################
 ###Calculate Mapping Rate###
 ############################
@@ -38,16 +48,16 @@ done
 #We use pullseq and bowtie2 to scaffold, align and map the number of aligned reads
 #Here, we're selecting scaffolds that are >=1000 bp 
 #Note: Need to change "$n/final.contigs.fa" if metaspades was used. I think the file you want is called "contigs.fasta". May also be the "scaffold.fasta" file; need to check
-
-for n in *assembly.fastq
+```bash
+for n in *assembly
 do
-/home/suginoka/Metagenomics_Programs/pullseq/src/pullseq -i $n/final.contigs.fa -m 1000 > $n"_sequence_min1000.fastq"
+/home/suginoka/Metagenomics_Programs/pullseq/src/pullseq -i $n/final.contigs.fa -m 1000 > $n"_sequence_min1000.fasta"
 done 
-
+```
 ##Create bowtie2 index
 ##NOTE: May need to go into bowtie2-build file and change the first line from calling python3 to calling python
 module load python
-for n in *min1000.fastq
+for n in *min1000.fasta
 do
 mkdir $n".min"
 /home/suginoka/Metagenomics_Programs/bowtie2-2.4.1-linux-x86_64/bowtie2-build $n $n".min"/sequence_min1000
